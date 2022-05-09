@@ -46,6 +46,7 @@ target_include_directories(lua_static PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+set(LUA_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 if(UNIX)
 	set(LUA_DEFINITIONS)
     
@@ -78,6 +79,11 @@ if(LUA_BUILD_BINARY)
 
 
     add_executable(lua "src/lua.c")
+    if (WIN32)
+      set_target_properties(lua PROPERTIES
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+        LINK_FLAGS /SUBSYSTEM:CONSOLE)
+    endif()
     target_link_libraries(lua PUBLIC lua_static)
     set_target_properties(lua PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}
@@ -90,6 +96,11 @@ endif()
 
 if(LUA_BUILD_COMPILER)
     add_executable(luac "src/luac.c")
+    if (WIN32)
+      set_target_properties(luac PROPERTIES
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+        LINK_FLAGS /SUBSYSTEM:CONSOLE)
+    endif()
     target_link_libraries(luac PUBLIC lua_static)
     set_target_properties(luac PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}
