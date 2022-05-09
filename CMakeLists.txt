@@ -14,10 +14,14 @@ endif()
 if(TOP_LEVEL)
     option(LUA_BUILD_BINARY "Build lua binary" ON)
     option(LUA_BUILD_COMPILER "Build luac compiler" ON)
-else()
+elseif(NOT ANDROID)
     option(LUA_BUILD_BINARY "Build lua binary" OFF)
     option(LUA_BUILD_COMPILER "Build luac compiler" ON)
+  else()
+    option(LUA_BUILD_BINARY "Build lua binary" OFF)
+    option(LUA_BUILD_COMPILER "Build luac compiler" OFF)
 endif()
+
 
 
 add_subdirectory(lua-5.4.4)
